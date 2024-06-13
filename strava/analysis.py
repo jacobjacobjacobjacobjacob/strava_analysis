@@ -4,7 +4,14 @@ import pandas as pd
 
 
 """
+DONE:
+- AVERAGE STATS BY YEAR
+- TOTAL STATS BY YEAR
+- TOTALS SORTED BY MONTH
+
+
 IMPLEMENTATIONS
+- AVERAGE BY MONTH
 - WEATHER
 - DAY OF WEEK
 - HEATMAP
@@ -13,18 +20,15 @@ IMPLEMENTATIONS
 """
 
 
-
-#COMMIT TO GIT!!!!!!!!!
-
-def get_data():
+def fetch_and_clean_strava_data():
     raw_data = get_strava_activities()
     clean_data = clean_strava_data(raw_data)
     clean_data["date"] = pd.to_datetime(clean_data["date"])
     return clean_data
 
 
-def get_year_totals(df, year=None):
-    """Fetch the sum of each stat by year or all time"""
+def calculate_yearly_totals(df, year=None):
+    """Fetch the sum of each metric by year or all time in a dict"""
     if year is not None:
         df = df[df["date"].dt.year == year]
 
@@ -45,18 +49,15 @@ def get_year_totals(df, year=None):
     }
 
 
-def get_year_averages(df, year=None):
-    """Fetch the average of each stat by year or all time"""
+def calculate_yearly_averages(df, year=None):
+    """Fetch the average of each metric by year or all time in a dict"""
     if year is not None:
         df = df[df["date"].dt.year == year]
-
-    df = df.replace(0, pd.NA)  # Replace NaN with 0
 
     average_distance = df["distance"].mean()
     average_elevation = df["elevation_gain"].mean()
     average_time = df["elapsed_time"].mean()
     average_heartrate = df["average_heartrate"].mean()
-    average_suffer_score = df["suffer_score"].mean()
 
     return {
         "year": year,
@@ -64,42 +65,112 @@ def get_year_averages(df, year=None):
         "average_elevation": round(average_elevation, 1),
         "average_time": round(average_time, 2),
         "average_heartrate": round(average_heartrate, 1),
-        "average_suffer_score": round(average_suffer_score, 1),
     }
 
 
-def get_distance_month(df, year=2024):
+def calculate_monthly_metrics(df, year=None):
+    """Fetch the sum of each metric in a dataframe sorted by month"""
+    df["date"] = pd.to_datetime(df["date"])
+
     if year is not None:
         df = df[df["date"].dt.year == year]
-    monthly_distance = df.groupby(df["date"].dt.month)["distance"].sum()
-    monthly_distance = monthly_distance.reindex(range(1, 13), fill_value=0)
-    df = pd.DataFrame(
-        {"Month": monthly_distance.index, "Total Distance": monthly_distance.values}
+
+    monthly_metrics = pd.pivot_table(
+        df,
+        index=df["date"].dt.month.rename("month"),
+        values=["distance", "elevation_gain", "elapsed_time", "type"],
+        aggfunc={
+            "distance": "sum",
+            "elevation_gain": "sum",
+            "elapsed_time": "sum",
+            "type": "count",
+        },
+        fill_value=0,
     )
-    df["Month"] = df["Month"].map(
+
+    # Rename columns
+    monthly_metrics.rename(
+        columns={
+            "distance": "total_distance",
+            "elevation_gain": "total_elevation",
+            "elapsed_time": "total_time",
+            "type": "total_rides",
+        },
+        inplace=True,
+    )
+
+    indoor_rides = df[df["type"] == "indoor"]
+    outdoor_rides = df[df["type"] == "outdoor"]
+
+    # Calculate counts for indoor and outdoor rides and ensure all months are represented
+    indoor_counts = (
+        indoor_rides.groupby(indoor_rides["date"].dt.month)
+        .size()
+        .reindex(range(1, 13), fill_value=0)
+    )
+    outdoor_counts = (
+        outdoor_rides.groupby(outdoor_rides["date"].dt.month)
+        .size()
+        .reindex(range(1, 13), fill_value=0)
+    )
+
+    # Reindex monthly_metrics to ensure all months are included
+    monthly_metrics = monthly_metrics.reindex(range(1, 13), fill_value=0)
+
+    monthly_metrics["total_indoor"] = indoor_counts
+    monthly_metrics["total_outdoor"] = outdoor_counts
+
+    # Replace NaN values with zeros for total_indoor and total_rides
+    monthly_metrics["total_indoor"] = monthly_metrics["total_indoor"].fillna(0)
+    monthly_metrics["total_rides"] = (
+        monthly_metrics["total_indoor"] + monthly_metrics["total_outdoor"]
+    )
+    monthly_metrics["total_rides"] = monthly_metrics["total_rides"].fillna(0)
+
+    # Reorder columns
+    monthly_metrics = monthly_metrics[
+        [
+            "total_distance",
+            "total_elevation",
+            "total_time",
+            "total_outdoor",
+            "total_indoor",
+            "total_rides",
+        ]
+    ]
+
+    # Map month numbers to month names
+    monthly_metrics.index = monthly_metrics.index.map(
         {
-            1: "Jan",
-            2: "Feb",
-            3: "Mar",
-            4: "Apr",
-            5: "May",
-            6: "Jun",
-            7: "Jul",
-            8: "Aug",
-            9: "Sep",
-            10: "Oct",
-            11: "Nov",
-            12: "Dec",
+            1: "jan",
+            2: "feb",
+            3: "mar",
+            4: "apr",
+            5: "may",
+            6: "jun",
+            7: "jul",
+            8: "aug",
+            9: "sep",
+            10: "oct",
+            11: "nov",
+            12: "dec",
         }
     )
-    return df
+
+    return monthly_metrics
 
 
 if __name__ == "__main__":
     # Fetch the clean data
-    data = get_data()
-    y_tot = get_year_totals(data)
-    print(y_tot)
-    print(data)
-    month_dist  = get_distance_month(data, 2023)
-    print(month_dist)
+    data = fetch_and_clean_strava_data()
+    #print(data)
+    y_tot = calculate_yearly_totals(data, year=2023)
+    # print(y_tot)
+    month_metric = calculate_monthly_metrics(data, year=2023)
+    # pd.set_option("display.max_rows", None)
+    pd.set_option("display.max_columns", None)
+    # print(data)
+    print(month_metric)
+
+    year_avg = calculate_yearly_averages(data, 2023)
+    print(year_avg)

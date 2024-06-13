@@ -89,13 +89,16 @@ def clean_strava_data(data):
     cleaned_data = [convert_formats(activity) for activity in filtered_data]
     extracted_data = [extract_data(activity) for activity in cleaned_data]
     df = pd.DataFrame(extracted_data)
+    df.fillna(0, inplace=True)
     return df
+
 
 strava_data = get_strava_activities()
 df = clean_strava_data(strava_data)
 best_efforts = get_best_efforts()
+pd.set_option('display.max_rows', None)
+pd.set_option('display.max_columns', None)
 
+#print(df)
 
-
-
-# df.to_csv("output.csv", index=False)
+# df.to_csv("strava.csv", index=False)
