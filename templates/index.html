@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Dashboard Admin Template by Tooplate.com</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600">
+    <link rel="stylesheet" href="static/css/fontawesome.min.css">
+    <link rel="stylesheet" href="static/css/fullcalendar.min.css">
+    <link rel="stylesheet" href="static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static/css/tooplate.css">
+
+</head>
+
+<body id="reportsPage">
+    <div class="" id="home">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="navbar navbar-expand-xl navbar-light bg-light">
+                        <a class="navbar-brand" href="#">
+                            <h1 class="tm-site-title mb-0">STRAVA</h1>
+                        </a>
+                        <button class="navbar-toggler ml-auto mr-0" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav mx-auto">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#">Menu 1
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                        Menu 2
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="#">Option 1</a>
+                                        <a class="dropdown-item" href="#">Option 2</a>
+                                        <a class="dropdown-item" href="#">Option 3</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="products.html">Menu 3</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link" href="accounts.html">Menu 4</a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                        Menu 5
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="#">Option 1</a>
+                                        <a class="dropdown-item" href="#">Option 2</a>
+                                        <a class="dropdown-item" href="#">Option 3</a>
+                                    </div>
+                                </li>
+                            </ul>
+                            <ul class="navbar-nav">
+                                <li class="nav-item">
+                                    <a class="nav-link d-flex" href="login.html">
+                                        <i class="far fa-user mr-2 tm-logout-icon"></i>
+                                        <span>WEATHER?</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+           <div class="row tm-content-row tm-mt-big">
+    <!-- First Row -->
+    <div class="tm-col tm-col-big">
+        <div class="bg-white tm-block h-100">
+            <h2 class="tm-block-title">Block 1</h2>
+            <p>Content for Block 1.</p>
+        </div>
+    </div>
+    <div class="tm-col tm-col-big">
+        <div class="bg-white tm-block h-100">
+            <h2 class="tm-block-title">Block 2</h2>
+            <p>Content for Block 2.</p>
+        </div>
+    </div>
+    <div class="tm-col tm-col-big">
+        <div class="bg-white tm-block h-100">
+            <h2 class="tm-block-title">Block 3</h2>
+            <p>Content for Block 3.</p>
+        </div>
+    </div>
+    <!-- Second Row -->
+    <div class="tm-col tm-col-big">
+        <div class="bg-white tm-block h-100">
+            <h2 class="tm-block-title">Block 4</h2>
+            <p>Content for Block 4.</p>
+        </div>
+    </div>
+    <div class="tm-col tm-col-big">
+        <div class="bg-white tm-block h-100">
+            <h2 class="tm-block-title">Block 5</h2>
+            <p>Content for Block 5.</p>
+        </div>
+    </div>
+    <div class="tm-col tm-col-big">
+        <div class="bg-white tm-block h-100">
+            <h2 class="tm-block-title">Block 6</h2>
+            <p>Content for Block 6.</p>
+        </div>
+    </div>
+</div>
+
+    <script src="static/js/jquery-3.3.1.min.js"></script>
+    <script src="static/js/moment.min.js"></script>
+    <script src="static/js/utils.js"></script>
+    <script src="static/js/Chart.min.js"></script>
+    <script src="static/js/fullcalendar.min.js"></script>
+    <script src="static/js/bootstrap.min.js"></script>
+    <script src="static/js/tooplate-scripts.js"></script>
+    <script>
+        let ctxLine,
+            ctxBar,
+            ctxPie,
+            optionsLine,
+            optionsBar,
+            optionsPie,
+            configLine,
+            configBar,
+            configPie,
+            lineChart;
+        barChart, pieChart;
+        $(function () {
+            updateChartOptions();
+            drawLineChart();
+            drawBarChart();
+            drawPieChart();
+            drawCalendar();
+
+            $(window).resize(function () {
+                updateChartOptions();
+                updateLineChart();
+                updateBarChart();
+                reloadPage();
+            });
+        })
+    </script>
+</body>
+</html>
