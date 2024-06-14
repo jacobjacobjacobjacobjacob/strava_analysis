@@ -2,6 +2,7 @@ import pandas as pd
 from strava.strava_api import get_strava_activities, get_best_efforts
 from datetime import datetime, timedelta
 from utils import m_to_km, ms_to_kph, sec_to_h
+from strava.data_validation import validate_data
 
 """
 Processing Strava activity data to extract clean and relevant information for cycling activities.
@@ -80,6 +81,8 @@ def extract_data(activity):
         "suffer_score": activity.get("suffer_score"),
     }
 
+    # Remove outdoor rides shorter than 10km
+
     return extracted_data
 
 
@@ -88,17 +91,27 @@ def clean_strava_data(data):
     filtered_data = filter_activities(data)
     cleaned_data = [convert_formats(activity) for activity in filtered_data]
     extracted_data = [extract_data(activity) for activity in cleaned_data]
-    df = pd.DataFrame(extracted_data)
-    df.fillna(0, inplace=True)
-    return df
+
+    clean_data = pd.DataFrame(extracted_data)
+
+    # Remove outdoor rides shorter than 10km
+    clean_data = clean_data.drop(
+        clean_data[
+            (clean_data["distance"] < 10) & (clean_data["type"] == "outdoor")
+        ].index
+    )
+    clean_data.fillna(0, inplace=True)
+
+    # Validate the dataframe
+    validate_data(clean_data)
+
+    return clean_data
 
 
 strava_data = get_strava_activities()
 df = clean_strava_data(strava_data)
 best_efforts = get_best_efforts()
-pd.set_option('display.max_rows', None)
-pd.set_option('display.max_columns', None)
-
-#print(df)
-
+pd.set_option("display.max_rows", None)
+pd.set_option("display.max_columns", None)
+# print(df)
 # df.to_csv("strava.csv", index=False)

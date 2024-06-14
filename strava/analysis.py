@@ -40,9 +40,9 @@ def calculate_yearly_totals(df, year=None):
     total_rides = total_indoor + total_outdoor
     return {
         "year": year,
-        "total_distance": round(total_distance, 1),
-        "total_elevation": round(total_elevation, 1),
-        "total_time": round(total_time, 2),
+        "total_distance": int(round(total_distance, 0)),
+        "total_elevation": int(round(total_elevation, 0)),
+        "total_time": int(round(total_time, 0)),
         "total_outdoor": total_outdoor,
         "total_indoor": total_indoor,
         "total_rides": total_rides,
@@ -54,22 +54,24 @@ def calculate_yearly_averages(df, year=None):
     if year is not None:
         df = df[df["date"].dt.year == year]
 
-    average_distance = df["distance"].mean()
-    average_elevation = df["elevation_gain"].mean()
-    average_time = df["elapsed_time"].mean()
-    average_heartrate = df["average_heartrate"].mean()
+    average_distance = df.loc[df["distance"] > 0, "distance"].mean()
+    average_elevation = df.loc[df["elevation_gain"] > 0, "elevation_gain"].mean()
+    average_time = df.loc[df["elapsed_time"] > 0, "elapsed_time"].mean()
+    average_heartrate = df.loc[df["average_heartrate"] > 0, "average_heartrate"].mean()
+    average_speed = df.loc[df["average_speed"] > 0, "average_speed"].mean()
 
     return {
         "year": year,
         "average_distance": round(average_distance, 1),
         "average_elevation": round(average_elevation, 1),
-        "average_time": round(average_time, 2),
+        "average_time": round(average_time, 1),
         "average_heartrate": round(average_heartrate, 1),
+        "average_speed": round(average_speed, 1),
     }
 
 
-def calculate_monthly_metrics(df, year=None):
-    """Fetch the sum of each metric in a dataframe sorted by month"""
+def calculate_monthly_metrics(df, year=None, months=None):
+    """Fetch the sum of each metric in a dataframe sorted by year and/or month"""
     df["date"] = pd.to_datetime(df["date"])
 
     if year is not None:
@@ -157,20 +159,27 @@ def calculate_monthly_metrics(df, year=None):
         }
     )
 
+    # Filter for specified months if provided
+    if months is not None:
+        months = [month.lower() for month in months]
+        monthly_metrics = monthly_metrics[monthly_metrics.index.isin(months)]
+
     return monthly_metrics
 
 
 if __name__ == "__main__":
     # Fetch the clean data
     data = fetch_and_clean_strava_data()
-    #print(data)
+    data.to_csv("strava.csv", index=False)
+    # print(data)
     y_tot = calculate_yearly_totals(data, year=2023)
     # print(y_tot)
     month_metric = calculate_monthly_metrics(data, year=2023)
-    # pd.set_option("display.max_rows", None)
+    pd.set_option("display.max_rows", None)
     pd.set_option("display.max_columns", None)
     # print(data)
-    print(month_metric)
+    # print(month_metric)
 
-    year_avg = calculate_yearly_averages(data, 2023)
-    print(year_avg)
+    year_avg = calculate_yearly_averages(data, 2024)
+    # print(month_metric)
+    # print(year_avg)
