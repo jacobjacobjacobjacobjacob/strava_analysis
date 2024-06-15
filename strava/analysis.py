@@ -171,15 +171,16 @@ if __name__ == "__main__":
     # Fetch the clean data
     data = fetch_and_clean_strava_data()
     data.to_csv("strava.csv", index=False)
+
     # print(data)
-    y_tot = calculate_yearly_totals(data, year=2023)
+    # y_tot = calculate_yearly_totals(data, year=2023)
     # print(y_tot)
-    month_metric = calculate_monthly_metrics(data, year=2023)
-    pd.set_option("display.max_rows", None)
-    pd.set_option("display.max_columns", None)
+    # month_metric = calculate_monthly_metrics(data, year=2023)
+    # pd.set_option("display.max_rows", None)
+    # pd.set_option("display.max_columns", None)
     # print(data)
     # print(month_metric)
 
-    year_avg = calculate_yearly_averages(data, 2024)
+    # year_avg = calculate_yearly_averages(data, 2024)
     # print(month_metric)
     # print(year_avg)

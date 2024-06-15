@@ -87,7 +87,7 @@ def extract_data(activity):
 
 
 def clean_strava_data(data):
-    """Clean Strava activities data and return as DataFrame"""
+    """Clean Strava activities data and return as dataframe"""
     filtered_data = filter_activities(data)
     cleaned_data = [convert_formats(activity) for activity in filtered_data]
     extracted_data = [extract_data(activity) for activity in cleaned_data]
@@ -102,16 +102,29 @@ def clean_strava_data(data):
     )
     clean_data.fillna(0, inplace=True)
 
+    # Sort by ascending order
+    clean_data = clean_data.sort_values(by="date")
+
     # Validate the dataframe
     validate_data(clean_data)
 
     return clean_data
 
 
-strava_data = get_strava_activities()
-df = clean_strava_data(strava_data)
-best_efforts = get_best_efforts()
-pd.set_option("display.max_rows", None)
-pd.set_option("display.max_columns", None)
-# print(df)
-# df.to_csv("strava.csv", index=False)
+def add_cumsum_columns(df):
+    """Add cumsum_['col_name'] to the dataframe"""
+    columns = ["total_distance", "total_time", "total_elevation", "total_rides"]
+    for column in columns:
+        if column in df.columns:
+            df[f"cumsum_{column}"] = df[column].cumsum()
+        else:
+            print(f"Warning: Column '{column}' does not exist in the DataFrame.")
+    return df
+
+
+#strava_data = get_strava_activities()
+#df = clean_strava_data(strava_data)
+#best_efforts = get_best_efforts()
+#pd.set_option("display.max_rows", None)
+#pd.set_option("display.max_columns", None)
+#print(df)
