@@ -122,6 +122,8 @@ def add_cumsum_columns(df):
     return df
 
 
+
+
 #strava_data = get_strava_activities()
 #df = clean_strava_data(strava_data)
 #best_efforts = get_best_efforts()

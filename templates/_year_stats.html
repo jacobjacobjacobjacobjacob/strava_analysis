@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Year Stats</title>
+    {% block content %}
+    <table class="tg tm-table-striped-odd table-striped table-hover table">
+        <thead>
+        <tr>
+            <th class="tg-0lax">Totals</th>
+            <th class="tg-0lax">{{ last_year }}</th>
+            <th class="tg-0lax">{{ current_year }}</th>
+            <th class="tg-0lax">All-Time</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td class="tg-nrix">Distance</td>
+            <td class="tg-nrix">{{ last_year_totals.total_distance }} km</td>
+            <td class="tg-nrix">{{ current_year_totals.total_distance }} km</td>
+            <td class="tg-nrix">{{ all_time_totals.total_distance }} km</td>
+        </tr>
+        <tr>
+            <td class="tg-nrix">Elevation</td>
+            <td class="tg-nrix">{{ last_year_totals.total_elevation }} m</td>
+            <td class="tg-nrix">{{ current_year_totals.total_elevation }} m</td>
+            <td class="tg-nrix">{{ all_time_totals.total_elevation }} m</td>
+        </tr>
+        <tr>
+            <td class="tg-nrix">Time</td>
+            <td class="tg-nrix">{{ last_year_totals.total_time }} h</td>
+            <td class="tg-nrix">{{ current_year_totals.total_time }} h</td>
+            <td class="tg-nrix">{{ all_time_totals.total_time }} h</td>
+
+        </tr>
+        <tr>
+            <td class="tg-nrix">Rides</td>
+            <td class="tg-nrix">{{ last_year_totals.total_rides }}</td>
+            <td class="tg-nrix">{{ current_year_totals.total_rides }}</td>
+            <td class="tg-nrix">{{ all_time_totals.total_rides }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <table class="tg tm-table-striped-odd table-striped table-hover table">
+        <thead>
+        <tr>
+            <th class="tg-0lax"><strong>Averages</strong></th>
+            <th class="tg-0lax">{{ last_year }}</th>
+            <th class="tg-0lax">{{ current_year }}</th>
+            <th class="tg-0lax"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td class="tg-nrix">Distance</td>
+            <td class="tg-nrix">{{ last_year_averages.average_distance }} km</td>
+            <td class="tg-nrix">{{ current_year_averages.average_distance }} km</td>
+        </tr>
+        <tr>
+            <td class="tg-nrix">Elevation</td>
+             <td class="tg-nrix">{{ last_year_averages.average_elevation }} m</td>
+            <td class="tg-nrix">{{ current_year_averages.average_elevation }} m</td>
+        </tr>
+        <tr>
+            <td class="tg-nrix">Time</td>
+             <td class="tg-nrix">{{ last_year_averages.average_time }} h</td>
+            <td class="tg-nrix">{{ current_year_averages.average_time }} h</td>
+        </tr>
+        <tr>
+            <td class="tg-nrix">Speed</td>
+            <td class="tg-nrix">{{ last_year_averages.average_speed }} km/h</td>
+            <td class="tg-nrix">{{ current_year_averages.average_speed }} km/h</td>
+        </tr>
+
+        </tbody>
+    </table>
+
+
+
+    {% endblock %}
+</head>
+<body>
+
+</body>
+</html>

@@ -173,8 +173,8 @@ if __name__ == "__main__":
     data.to_csv("strava.csv", index=False)
 
     # print(data)
-    # y_tot = calculate_yearly_totals(data, year=2023)
-    # print(y_tot)
+    y_tot = calculate_yearly_totals(data)
+    print(y_tot)
     # month_metric = calculate_monthly_metrics(data, year=2023)
     # pd.set_option("display.max_rows", None)
     # pd.set_option("display.max_columns", None)
