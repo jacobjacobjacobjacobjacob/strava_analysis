@@ -7,7 +7,12 @@ from strava.analysis import (
 )
 from strava.data_processing import add_cumsum_columns
 from config import current_month
-from strava.plots import generate_elevation_plot, generate_distance_plot
+from strava.plots import (
+    generate_elevation_plot,
+    generate_distance_plot,
+    generate_rides_plot,
+    generate_time_plot,
+)
 
 app = Flask(__name__)
 
@@ -40,6 +45,8 @@ def home():
 
     distance_plot_html = generate_distance_plot(month_2023_slice, month_2024_slice)
     elevation_plot_html = generate_elevation_plot(month_2023_slice, month_2024_slice)
+    time_plot_html = generate_time_plot(month_2023_slice, month_2024_slice)
+    rides_plot_html = generate_rides_plot(month_2023_slice, month_2024_slice)
 
     return render_template(
         "index.html",
@@ -52,6 +59,8 @@ def home():
         last_year_averages=last_year_averages,
         distance_plot_html=distance_plot_html,
         elevation_plot_html=elevation_plot_html,
+        time_plot_html=time_plot_html,
+        rides_plot_html=rides_plot_html,
     )
 
 

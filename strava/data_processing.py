@@ -1,5 +1,5 @@
 import pandas as pd
-from strava.strava_api import get_strava_activities, get_best_efforts
+from strava.strava_api import get_strava_activities
 from datetime import datetime, timedelta
 from utils import m_to_km, ms_to_kph, sec_to_h
 from strava.data_validation import validate_data
@@ -78,7 +78,6 @@ def extract_data(activity):
         "elevation_gain": activity.get("total_elevation_gain"),
         "moving_time": activity.get("moving_time"),
         "elapsed_time": activity.get("elapsed_time_hours"),
-        "suffer_score": activity.get("suffer_score"),
     }
 
     # Remove outdoor rides shorter than 10km
@@ -112,7 +111,7 @@ def clean_strava_data(data):
 
 
 def add_cumsum_columns(df):
-    """Add cumsum_['col_name'] to the dataframe"""
+    """Add cumulative columns to the dataframe"""
     columns = ["total_distance", "total_time", "total_elevation", "total_rides"]
     for column in columns:
         if column in df.columns:
@@ -122,11 +121,3 @@ def add_cumsum_columns(df):
     return df
 
 
-
-
-#strava_data = get_strava_activities()
-#df = clean_strava_data(strava_data)
-#best_efforts = get_best_efforts()
-#pd.set_option("display.max_rows", None)
-#pd.set_option("display.max_columns", None)
-#print(df)

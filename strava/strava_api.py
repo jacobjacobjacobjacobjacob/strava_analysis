@@ -70,9 +70,3 @@ def get_best_efforts():
 
     response = response.json()
 
-    best_efforts = {
-        "longest_ride": response["biggest_ride_distance"],
-        "biggest_climb": response["biggest_climb_elevation_gain"],
-    }
-
-    return best_efforts
